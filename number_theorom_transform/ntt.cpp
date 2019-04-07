@@ -92,8 +92,14 @@ int main()
 	init();
 	ntt(0,v1);
 	ntt(0,v2);
+	for(int i=0;i<n;i++)
+		printf("i:%d rt:%d\n",i,omg[0][i]);
+	for(int i=0;i<l1;i++)
+		printf("i:%d v1:%d\n",i,v1[i]);
+	for(int i=0;i<l2;i++)
+		printf("i:%d v2:%d\n",i,v2[i]);
 	for(rg i=0;i<n;i++)
-		v1[i]=(ll)v1[i]*v2[i]%mod;
+		v1[i]=((ll)v1[i]+v2[i])%mod;
 	ntt(1,v1);
 	int ti=qpow(n,mod-2);
 	for(rg i=0;i<l1+l2-1;i++)
