@@ -8,7 +8,6 @@
 #define rc(x) ch[x][1]
 #define gc() (p1==p2&&(p2=(p1=buffer)+fread(buffer,1,10000000,stdin),p1==p2)?EOF:*p1++)
 #define nrt(x) lc(f[x])==x||rc(f[x])==x
-#define down(x) if(lz[x]) swap(lc(x),rc(x)),lz[x]=0,lz[lc(x)]^=1,lz[rc(x)]^=1
 #define update(x) s[x]=s[lc(x)]^s[rc(x)]^v[x]
 using namespace std;
 char *p1,*p2,buffer[10000009];
@@ -37,6 +36,11 @@ void rotate(int x)
 	ch[x][dx^1]=y;
 	update(y);
 	update(x);
+}
+void down(int x)
+{
+	if(lz[x])
+		swap(lc(x),rc(x)),lz[x]=0,lz[lc(x)]^=1,lz[rc(x)]^=1;
 }
 void splay(int x)
 {
@@ -73,13 +77,9 @@ int findrt(int x)
 {
 	access(x);
 	splay(x);
+	down(x);
 	while(lc(x))
-	{
-		down(x);
-		if(!lc(x))
-			break;
-		x=lc(x);
-	}
+		down(x=lc(x));
 	splay(x);
 	return x;
 }
