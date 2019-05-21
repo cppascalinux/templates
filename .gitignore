@@ -2,5 +2,7 @@
 *.png
 *.exe
 png.in
-[1-5].in
-[1-5].out
+[1-9].in
+[1-9].out
+10.in
+10.out
