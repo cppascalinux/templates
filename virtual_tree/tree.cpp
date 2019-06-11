@@ -112,7 +112,7 @@ void dfs2(int x,int fa)
 	if(fa)
 		h[x]=mn[x];
 	li sm=0;
-	printf("x:%d fa:%d\n",x,fa);
+	// printf("x:%d fa:%d\n",x,fa);
 	for(int i=0;i<(int)g[x].size();i++)
 		if(g[x][i]!=fa)
 		{
