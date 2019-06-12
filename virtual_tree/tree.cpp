@@ -24,14 +24,14 @@ vector<int> g[250009];
 vector<pii> ask;
 void clr()
 {
-	for(int i=1;i<=cntp;i++)
-	{
-		h[pe[i]]=inf;
-		g[pe[i]].clear();
-		vis[pe[i]]=0;
-	}
+	// for(int i=1;i<=cntp;i++)
+	// {
+	// 	h[pe[i]]=inf;
+	// 	g[pe[i]].clear();
+	// 	vis[pe[i]]=0;
+	// }
 	// for(int i=0;i<(int)ask.size();i++)
-	// 	vis[ask[i]]=0;
+	// 	vis[ask[i].se]=0,g[ask[i].se].clear();
 	cntp=0;
 	ask.clear();
 }
@@ -111,6 +111,8 @@ void dfs2(int x,int fa)
 {
 	if(fa)
 		h[x]=mn[x];
+	else
+		h[x]=inf;
 	li sm=0;
 	// printf("x:%d fa:%d\n",x,fa);
 	for(int i=0;i<(int)g[x].size();i++)
@@ -121,6 +123,7 @@ void dfs2(int x,int fa)
 		}
 	if(!vis[x])
 		h[x]=min((li)h[x],sm);
+	vis[x]=0,g[x].clear();
 }
 void solve()
 {
