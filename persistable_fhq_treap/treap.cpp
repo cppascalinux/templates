@@ -92,7 +92,6 @@ int kth(int x,int k)
 void ins(int lst,int cur,int val)
 {
 	int lscnt=cnt;
-	rt[cur]=rt[lst];
 	pii t=split(lscnt,rt[cur],val);
 	int x=newnode(val);
 	rt[cur]=mrg(lscnt,t.fi,x);
@@ -101,7 +100,6 @@ void ins(int lst,int cur,int val)
 void del(int lst,int cur,int val)
 {
 	int lscnt=cnt;
-	rt[cur]=rt[lst];
 	pii t1=split(lscnt,rt[cur],val-1);
 	pii t2=split(lscnt,t1.se,val);
 	rt[cur]=mrg(lscnt,ch[t2.fi][0],ch[t2.fi][1]);
@@ -120,18 +118,19 @@ int main()
 	for(int i=1,a,b,c;i<=n;i++)
 	{
 		scanf("%d%d%d",&a,&b,&c);
+		rt[i]=rt[a];
 		if(b==1)
 			ins(a,i,c);
 		else if(b==2)
 			del(a,i,c);
 		else if(b==3)
-			rt[i]=rt[a],printf("%d\n",rnk(rt[i],c)-1);
+			printf("%d\n",rnk(rt[i],c)-1);
 		else if(b==4)
-			rt[i]=rt[a],printf("%d\n",v[kth(rt[i],c+1)]);
+			printf("%d\n",v[kth(rt[i],c+1)]);
 		else if(b==5)
-			rt[i]=rt[a],printf("%d\n",v[kth(rt[i],rnk(rt[i],c)-1)]);
+			printf("%d\n",v[kth(rt[i],rnk(rt[i],c)-1)]);
 		else if(b==6)
-			rt[i]=rt[a],printf("%d\n",v[kth(rt[i],rnk(rt[i],c+1))]);
+			printf("%d\n",v[kth(rt[i],rnk(rt[i],c+1))]);
 	}
 	return 0;
 }
