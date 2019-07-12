@@ -21,7 +21,7 @@ struct node
 };
 int n,m,cnt;
 int p[100009];
-int lp[4000009],rp[4000009],sz[4000009];
+int lp[6000009],rp[6000009],sz[6000009];
 void update(int a)
 {
 	sz[a]=sz[lp[a]]+sz[rp[a]];
