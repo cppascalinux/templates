@@ -14,9 +14,8 @@
 using namespace std;
 char *p1,*p2,buf1[10000009];
 int n;
-int s[10000009];
+int p[10000009];
 int lm[10000009],rm[10000009],st[10000009];
-int ls[10000009],rs[10000009];
 void rd(int &x)
 {
 	char c=0;
@@ -31,39 +30,38 @@ void init()
 	int tp=0;
 	for(int i=n;i>=1;i--)
 	{
-		while(tp&&s[i]<s[st[tp]])
+		while(tp&&p[i]<p[st[tp]])
 			lm[st[tp--]]=i;
 		st[++tp]=i;
 	}
 	tp=0;
 	for(int i=1;i<=n;i++)
 	{
-		while(tp&&s[i]<s[st[tp]])
+		while(tp&&p[i]<p[st[tp]])
 			rm[st[tp--]]=i;
 		st[++tp]=i;
 	}
 }
 void solve()
-zuoerzishang
-	for(int i=1;i<=n;i++)
-	{
-		if(lm[i]&&rm[i])
-		{
-			if(s[lm[i]]>s[rm[i]])
-				rs[lm[i]]=i;
-			else
-				ls[rm[i]]=i;
-		}
-		else if(lm[i])
-			rs[lm[i]]=i;
-		else
-			ls[rm[i]]=i;
-	}
-	// for(int i=1;i<=n;i++)
-	// 	printf("i:%d ls:%d rs:%d\n",i,ls[i],rs[i]);
+{
 	LL ansl=0,ansr=0;
 	for(int i=1;i<=n;i++)
-		ansl^=(LL)i*(ls[i]+1),ansr^=(LL)i*(rs[i]+1);
+		ansl^=i,ansr^=i;
+	for(int i=1;i<=n;i++)
+	{
+		int tl=lm[i],tr=rm[i];
+		if(tl&&tr)
+		{
+			if(p[tl]>p[tr])
+				ansr^=tl^((LL)tl*(i+1));
+			else
+				ansl^=tr^((LL)tr*(i+1));
+		}
+		else if(tl)
+			ansr^=tl^((LL)tl*(i+1));
+		else
+			ansl^=tr^((LL)tr*(i+1));
+	}
 	printf("%lld %lld",ansl,ansr);
 }
 int main()
@@ -74,7 +72,7 @@ int main()
 #endif
 	rd(n);
 	for(int i=1;i<=n;i++)
-		rd(s[i]);
+		rd(p[i]);
 	init();
 	solve();
 	return 0;
