@@ -12,11 +12,11 @@
 #include<cstring>
 #include<algorithm>
 #include<vector>
+#include<cassert>
 #define VI vector<int>
 #define PB push_back
 #define LMS(x) (typ[x]&&!typ[x-1])
 using namespace std;
-int buc[1000009][2],tp[1000009];
 char s0[1000009];
 int cmp(VI &s,VI &typ,int x,int y)
 {
@@ -32,14 +32,15 @@ int cmp(VI &s,VI &typ,int x,int y)
 }
 void getsa(int n,int m,VI &s,VI &sa)
 {
-	VI typ(n+2),rnk(n+2),ord(1);
+	VI typ(n+2),rnk(n+2),ord(1),tp(m+1);
 	int nxn=0;
 	for(int i=n-1;i>=1;i--)
 		typ[i]=s[i]==s[i+1]?typ[i+1]:(s[i]<s[i+1]);
-	typ[0]=typ[n+1]=1;
+	typ[n+1]=1;
+	vector<int[2]> buc(m+1);
 	// for(int i=1;i<=n;i++)
 	// 	printf("i:%d typ:%d\n",i,typ[i]);
-
+	// fflush(stdout);
 	for(int i=1;i<=m;i++)
 		buc[i][0]=buc[i][1]=0;
 	int bk=0;
@@ -65,7 +66,7 @@ void getsa(int n,int m,VI &s,VI &sa)
 	sa[0]=n+1;
 	for(int i=0;i<=n;i++)
 	{
-		if(sa[i]&&typ[sa[i]-1]==0)
+		if(sa[i]>=2&&typ[sa[i]-1]==0)
 			sa[++tp[s[sa[i]-1]]]=sa[i]-1;
 		// printf("i:%d s:%c sa:%d typ:%d tp:%d\n",i,s[sa[i]-1],sa[i],typ[i],tp[s[sa[i]-1]]);
 	}
@@ -74,7 +75,7 @@ void getsa(int n,int m,VI &s,VI &sa)
 	for(int i=1;i<=m;i++)
 		tp[i]=buc[i][1];
 	for(int i=n;i>=1;i--)
-		if(sa[i]&&typ[sa[i]-1]==1)
+		if(sa[i]>=2&&typ[sa[i]-1]==1)
 			sa[tp[s[sa[i]-1]]--]=sa[i]-1;
 
 	int lst=0,nxm=0;
@@ -96,15 +97,10 @@ void getsa(int n,int m,VI &s,VI &sa)
 	for(int i=1;i<=nxn;i++)
 		nxs.PB(rnk[ord[i]]);
 	nxs.PB(0);
+	// assert(nxs.size()==nxn+2);
 	getsa(nxn,nxm,nxs,nxsa);
 	// for(int i=1;i<=nxn;i++)
 	// 	printf("i:%d nxsa:%d\n",i,nxsa[i]);
-	for(int i=1;i<=m;i++)
-		buc[i][0]=buc[i][1]=0;
-	for(int i=1;i<=n;i++)
-		buc[s[i]][typ[i]]++;
-	for(int i=1;i<=m;i++)
-		buc[i][0]+=buc[i-1][1],buc[i][1]+=buc[i][0];
 	for(int i=1;i<=m;i++)
 		tp[i]=buc[i][0];
 	for(int i=1;i<=n;i++)
@@ -118,12 +114,12 @@ void getsa(int n,int m,VI &s,VI &sa)
 
 	sa[0]=n+1;
 	for(int i=0;i<=n;i++)
-		if(sa[i]&&typ[sa[i]-1]==0)
+		if(sa[i]>=2&&typ[sa[i]-1]==0)
 			sa[++tp[s[sa[i]-1]]]=sa[i]-1;
 	for(int i=1;i<=m;i++)
 		tp[i]=buc[i][1];
 	for(int i=n;i>=1;i--)
-		if(sa[i]&&typ[sa[i]-1]==1)
+		if(sa[i]>=2&&typ[sa[i]-1]==1)
 			sa[tp[s[sa[i]-1]]--]=sa[i]-1;
 }
 int main()
