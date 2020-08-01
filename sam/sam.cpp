@@ -1,74 +1,56 @@
+//2020.07.29
+//luoguP3804 【模板】后缀自动机 (SAM)
 #include<iostream>
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
-#define ll long long
-#define rg register int
+#include<vector>
+#define LL long long
 using namespace std;
-int n,m,tot,last,sum;
-char s[1000010];
-int len[2000010],link[2000010],cnt[2000010],a[2000010][30];
-int head[2000010],next[2000010],edge[2000010];
-void add(int x)
+int n,tot=1,lst=1;
+LL ans;
+char s[1000009];
+int nxt[2000009][27];
+int sz[2000009],lnk[2000009],len[2000009];
+vector<int> e[2000009];
+void add(int c)
 {
-	int cur=++tot;
-	len[cur]=len[last]+1;
-	cnt[cur]=1;
-	int p;
-	for(p=last;~p&&!a[p][x];p=link[p])
-		a[p][x]=cur;
-	if(~p)
-	{
-		int q=a[p][x];
-		if(len[p]+1==len[q])
-			link[cur]=q;
-		else
-		{
-			int c=++tot;
-			len[c]=len[p]+1;
-			link[c]=link[q];
-			memcpy(a[c],a[q],sizeof(a[c]));
-			for(;~p&&a[p][x]==q;p=link[p])
-				a[p][x]=c;
-			link[q]=link[cur]=c;
-		}
-	}
-	last=cur;
-}
-void ins(int a,int b)
-{
-	edge[++sum]=b;
-	next[sum]=head[a];
-	head[a]=sum;
+	int cur=++tot,p=lst;
+	len[cur]=len[lst]+1,sz[cur]=1,lst=cur;
+	for(;p&&!nxt[p][c];p=lnk[p])
+		nxt[p][c]=cur;
+	if(!p)
+		return lnk[cur]=1,void();
+	int q=nxt[p][c];
+	if(len[q]==len[p]+1)
+		return lnk[cur]=q,void();
+	int cln=++tot;
+	len[cln]=len[p]+1,lnk[cln]=lnk[q];
+	memcpy(nxt[cln],nxt[q],27*4);
+	for(;p&&nxt[p][c]==q;p=lnk[p])
+		nxt[p][c]=cln;
+	lnk[cur]=lnk[q]=cln;
 }
 void dfs(int x)
 {
-	for(int i=head[x];i;i=next[i])
-	{
-		dfs(edge[i]);
-		cnt[x]+=cnt[edge[i]];
-	}
+	for(auto t:e[x])
+		dfs(t),sz[x]+=sz[t];
+	if(sz[x]>1)
+		ans=max(ans,(LL)sz[x]*len[x]);
 }
 int main()
 {
-	#ifndef ONLINE_JUDGE
+#ifdef I_LOVE_KTY
 	freopen("sam.in","r",stdin);
 	freopen("sam.out","w",stdout);
-	#endif
-	fread(s,1,1000000,stdin);
-	n=strlen(s);
-	for(rg i=n;i>=1;i--)
-		s[i]=s[i-1]-'a'+1;
-	link[0]=-1;
-	for(rg i=1;i<=n;i++)
-		add(s[i]);
-	for(rg i=1;i<=tot;i++)
-		ins(link[i],i);
-	dfs(0);
-	ll ans=0;
-	for(rg i=1;i<=tot;i++)
-		if(cnt[i]>1)
-			ans=max(ans,(ll)len[i]*cnt[i]);
+#endif
+	scanf("%s",s+1);
+	n=strlen(s+1);
+	for(int i=1;i<=n;i++)
+		add(s[i]-'a'+1);
+	for(int i=2;i<=tot;i++)
+		e[lnk[i]].push_back(i);
+	dfs(1);
 	printf("%lld",ans);
 	return 0;
 }
